@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../entities/document.dart';
 
+import 'newDocumentPreviewPage.dart';
+
 class NewDocumentCameraPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => new NewDocumentCameraPageState();
@@ -74,6 +76,11 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
     currentDocument.pages.add(new DocumentPage(bytes));
     file.delete();          
     this.setState(()=> currentDocument = currentDocument);
+    goToNewDocumentPreviewPage();
+  }
+
+  void goToNewDocumentPreviewPage() async {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
   }
 
   Widget _buildBottomButtons(){
@@ -98,6 +105,7 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
       elevation: 5.0,
       highlightElevation: 5.0,
       mini: false,
+      heroTag: "galleryButton",
       notchMargin: 11.0,
       backgroundColor: const Color.fromARGB(0xFF, 0xA7, 0xA7, 0xA7),
       child: new Icon(Icons.photo_library, color: Colors.white),
@@ -110,23 +118,59 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
       elevation: 5.0,
       highlightElevation: 5.0,
       mini: false,
+      heroTag: "takePictureButton",
       notchMargin: 11.0,
       backgroundColor: const Color.fromARGB(0xFF, 0x00, 0xBB, 0xAA),
       child: new Icon(Icons.camera, color: Colors.white),
-      onPressed: ()=> this.takePicture() ,          
+      onPressed: ()=> this.takePicture()
     );
   }
 
   Widget _buildMiniatureButton(){
     if(currentDocument.pages.length == 0) return new Container(height: 60.0, width: 60.0,);
     
-    return  new Container(
+    var miniature = new Container(
       width: 60.0,
       height: 60.0,
       decoration: new BoxDecoration(
         border: new Border.all(color: const Color.fromARGB(0xFF,0x00, 0xd2, 0xb5),width: 1.0)
       ),
       child: new Image.memory(currentDocument.pages.last.data, fit:BoxFit.fill)      
+    );
+
+    var counter = new Container(
+        width: 20.0,
+        height: 20.0,
+        decoration: new BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color.fromARGB(0xFF, 0x00, 0xbb, 0xa1)
+        ),
+        child: new Center(
+          child : new Text(
+            currentDocument.pages.length.toString(),
+            style: new TextStyle(inherit: false)
+          ),
+        ),
+    );
+
+    var stack = new Stack(
+        children: <Widget>[
+          new Container(width: 70.0, height: 70.0),
+          new Positioned(
+            child: miniature,
+            bottom: 0.0,
+            right: 0.0,           
+          ),
+          new Positioned(
+            child: counter,
+            top:0.0,
+            left: 0.0,
+          )
+        ],
+    );
+    return new GestureDetector(
+      child: stack,
+      onTap: ()=> goToNewDocumentPreviewPage(),
     );
   }
 

@@ -73,14 +73,29 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
     await controller.takePicture(filePath); 
     var file = File(filePath);
     var bytes = await file.readAsBytes();
-    currentDocument.pages.add(new DocumentPage(bytes));
+    var newDocumentPage =  new DocumentPage(bytes);
+    var createNewItem =  currentDocument.currentIndex == currentDocument.pages.length; 
+    if(createNewItem) 
+    {
+      currentDocument.pages.add(newDocumentPage);
+      currentDocument.currentIndex++;
+    }
+    else
+    {
+      currentDocument.pages[currentDocument.currentIndex] = newDocumentPage;
+      currentDocument.currentIndex++;
+    } 
     file.delete();          
     this.setState(()=> currentDocument = currentDocument);
     goToNewDocumentPreviewPage();
   }
 
   void goToNewDocumentPreviewPage() async {
-      await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
+     var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
+     if(result != null) setState(()=> currentDocument = result);
+     
+     var currentPage = currentDocument.currentIndex +1;
+     print("Strona $currentPage");
   }
 
   Widget _buildBottomButtons(){

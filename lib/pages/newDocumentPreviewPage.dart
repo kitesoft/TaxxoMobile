@@ -45,9 +45,9 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
     var actionColumn =  new Column(      
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        _buildButton("Usuń stronę", Icons.delete,"RemoveImageButton", ()=> {}),
-        _buildButton("Potwórz zdjęcie", Icons.camera_alt,"RepeatImageButton", ()=> {}),
-        _buildButton("Dodaj stronę", Icons.add_to_photos,"AddImageButton", ()=> {})
+        _buildButton("Usuń stronę", Icons.delete,"RemoveImageButton", ()=> _removeImage() ),
+        _buildButton("Potwórz zdjęcie", Icons.camera_alt,"RepeatImageButton", ()=> _repeatImage()),
+        _buildButton("Dodaj stronę", Icons.add_to_photos,"AddImageButton", ()=> _addNextImage())
       ],
     );
 
@@ -97,7 +97,7 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
   initState(){
     super.initState();
     currentDocument = widget.document;
-    currentPageIndex = widget.document.pages.length - 1;
+    currentPageIndex = widget.document.currentIndex;
     pageController = new PageController(
       initialPage: currentPageIndex,
       keepPage: false,
@@ -122,6 +122,7 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
   _buildCarouselView(){
    return new PageView.builder(
       onPageChanged: (val){
+        currentDocument.currentIndex = val;
         setState(()=> currentPageIndex = val);
       },
       itemCount: currentDocument.pages.length,
@@ -173,5 +174,20 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
     var currentPage = currentPageIndex+1;
     var pageCount = currentDocument.pages.length;
     return "Strona $currentPage z $pageCount";
+  }
+
+  _removeImage(){
+    currentDocument.pages.removeAt(this.currentPageIndex);
+    currentDocument.currentIndex = currentDocument.pages.length -1;
+    Navigator.pop(context, currentDocument);
+  }
+
+  _repeatImage(){
+    Navigator.pop(context, currentDocument);
+  }
+  
+  _addNextImage(){
+    currentDocument.currentIndex = currentDocument.pages.length;
+    Navigator.pop(context, currentDocument);
   }
 }

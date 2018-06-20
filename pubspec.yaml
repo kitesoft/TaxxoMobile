@@ -3,7 +3,8 @@ description: A new Flutter project.
 
 dependencies:
   photo_view:
-  camera: 
+  camera:
+  image_picker: 
   path_provider:
   flutter:
     sdk: flutter

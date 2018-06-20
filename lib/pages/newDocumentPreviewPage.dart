@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../entities/document.dart';
-
+import 'newDocumentUploadPage.dart';
 
 class NewDocumentPreviewPage extends StatefulWidget{
   final Document document;
@@ -33,15 +33,16 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
         heroTag: "NextPageButton",
         backgroundColor: new Color(0xFF00BBA1),
         child: new Icon(Icons.check, color: Colors.white),
-        tooltip: "Dalej",
+        onPressed: () => _goToDocumentUploadPage(),
       ),
     );
   }
 
+  void _goToDocumentUploadPage() async{
+    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentUploadPage(currentDocument) ));
+  }
 
-  _buildActionButtons(){
-    
-
+  _buildActionButtons(){  
     var actionColumn =  new Column(      
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -149,12 +150,12 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         new GestureDetector(
-          child: new Icon(Icons.arrow_left, color: Colors.white),
+          child: new Icon(Icons.chevron_left, color: Colors.white),
           onTap: () => pageController.previousPage(curve: Curves.ease, duration: new Duration(milliseconds: 300)),
         ),        
         new Text(_getSwitcherText()),
         new GestureDetector(
-          child: new Icon(Icons.arrow_right, color: Colors.white),
+          child: new Icon(Icons.chevron_right, color: Colors.white),
           onTap: () => pageController.nextPage(curve: Curves.ease, duration: new Duration(milliseconds: 300)),
         ),    
       ],
@@ -166,7 +167,7 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
         color: const Color.fromARGB(0xFF, 0x21, 0x21, 0x21),
         borderRadius: new BorderRadius.all( const Radius.circular(40.0))
       ),
-      child: new Padding(child: content, padding: new EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),) 
+      child: new Padding(child: content, padding: new EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),) 
     );
   }
 

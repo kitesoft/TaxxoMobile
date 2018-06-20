@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 import 'dart:io';
+import 'dart:async';
 import '../entities/document.dart';
 
 import 'newDocumentPreviewPage.dart';
@@ -20,27 +23,27 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
   CameraController controller;
   bool isFlashOn;
   Document currentDocument;
+  String currentPageNotificationText;
+  bool showCurrentPageNotification;
 
   @override
   Widget build(BuildContext context) {
      if ( cameras == null || !controller.value.isInitialized) {
       return new Container();
     }
-    var transformedContent = new Transform.scale(
-      scale: 1 / controller.value.aspectRatio,
-      child: new Center(
-        child: new AspectRatio(
+    var cameraPreview = new Center(
+      child: new AspectRatio(
             aspectRatio: controller.value.aspectRatio,
             child: new CameraPreview(controller),
         )
-      )
     );
 
     var stack = new Stack(    
       children: <Widget>[
-        transformedContent,
+        cameraPreview,
         _buildAppBar(),
-        _buildBottomButtons()
+        _buildBottomButtons(),
+        _buildPageNotification()
       ],
     );
     return stack;
@@ -49,9 +52,12 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
  @override
   void initState() {
     super.initState();
+    showCurrentPageNotification = true;
+    currentPageNotificationText = _createPageNotificationText(1); 
     availableCameras().then((resolvedCameras){
         cameras = resolvedCameras;
         controller = new CameraController(cameras[0], ResolutionPreset.medium);
+
         controller.initialize().then((_) {
           if (!mounted) {
             return;
@@ -64,6 +70,10 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
     });
   }
 
+  String _createPageNotificationText(int pageNumber){
+      return "Strona $pageNumber faktury";      
+  }
+
   void takePicture() async{
     final String timestamp = new DateTime.now().millisecondsSinceEpoch.toString();
     final Directory extDir = await getApplicationDocumentsDirectory();
@@ -72,30 +82,70 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
     final String filePath = '$dirPath/${timestamp}.jpg';
     await controller.takePicture(filePath); 
     var file = File(filePath);
-    var bytes = await file.readAsBytes();
-    var newDocumentPage =  new DocumentPage(bytes);
+    var fileData = await file.readAsBytes();    
+    createNewDocumentPage(fileData);
+    file.delete();          
+
+  }
+
+  void createNewDocumentPage(List<int> data) {
+    var page = new DocumentPage(data);
     var createNewItem =  currentDocument.currentIndex == currentDocument.pages.length; 
     if(createNewItem) 
     {
-      currentDocument.pages.add(newDocumentPage);
+      currentDocument.pages.add(page);
       currentDocument.currentIndex++;
     }
     else
     {
-      currentDocument.pages[currentDocument.currentIndex] = newDocumentPage;
+      currentDocument.pages[currentDocument.currentIndex] = page;
       currentDocument.currentIndex++;
     } 
-    file.delete();          
     this.setState(()=> currentDocument = currentDocument);
     goToNewDocumentPreviewPage();
   }
 
+  void selectPictureFromGallery() async{
+    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if(picture != null){
+      var fileData = await picture.readAsBytes();
+      createNewDocumentPage(fileData);
+    }
+  }
+
   void goToNewDocumentPreviewPage() async {
-     var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
-     if(result != null) setState(()=> currentDocument = result);
-     
-     var currentPage = currentDocument.currentIndex +1;
-     print("Strona $currentPage");
+    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
+    if(result == null){
+      //Back button pressed
+      currentDocument.currentIndex++;
+      result = currentDocument;
+    }  
+
+    int pageNumber = result.currentIndex+1;
+
+    new Future.delayed(const Duration(seconds: 10)).then((_)=> setState(()=> showCurrentPageNotification = false));
+    setState(() { 
+      currentDocument = result;
+      currentPageNotificationText = _createPageNotificationText(pageNumber); 
+      showCurrentPageNotification = true; 
+    });
+          
+  }
+
+  Widget _buildPageNotification(){
+    if(!showCurrentPageNotification) return new Container();
+
+    return new Center(
+      child: new Container(      
+        decoration: new BoxDecoration(
+            color: const Color.fromARGB(0x8c, 0x21, 0x21, 0x21),
+            borderRadius: new BorderRadius.all( const Radius.circular(40.0))
+          ),
+        child: new Padding(
+          child: new Text(currentPageNotificationText, style: new TextStyle(inherit: false),), 
+          padding: new EdgeInsets.symmetric(vertical: 12.0, horizontal: 56.0),) 
+      ),
+    );
   }
 
   Widget _buildBottomButtons(){
@@ -124,7 +174,7 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
       notchMargin: 11.0,
       backgroundColor: const Color.fromARGB(0xFF, 0xA7, 0xA7, 0xA7),
       child: new Icon(Icons.photo_library, color: Colors.white),
-      onPressed: ()=> {},          
+      onPressed: ()=> selectPictureFromGallery(),          
     );
   }
 

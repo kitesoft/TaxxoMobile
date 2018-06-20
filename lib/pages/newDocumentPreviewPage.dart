@@ -178,7 +178,7 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
 
   _removeImage(){
     currentDocument.pages.removeAt(this.currentPageIndex);
-    currentDocument.currentIndex = currentDocument.pages.length -1;
+    currentDocument.currentIndex = currentDocument.pages.length;
     Navigator.pop(context, currentDocument);
   }
 

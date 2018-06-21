@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../entities/document.dart';
-import 'newDocumentUploadPage.dart';
+import 'newDocumentUploadScreen.dart';
 
-class NewDocumentPreviewPage extends StatefulWidget{
+class NewDocumentPreviewScreen extends StatefulWidget{
   final Document document;
-  NewDocumentPreviewPage(this.document);
+  NewDocumentPreviewScreen(this.document);
   
   @override
-  State<StatefulWidget> createState() => new NewDocumentPreviewPageState();
+  State<StatefulWidget> createState() => new NewDocumentPreviewScreenState();
 }
 
 
 
-class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
+class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
   Document currentDocument;
   int currentPageIndex;
   PageController pageController;
@@ -39,7 +39,7 @@ class NewDocumentPreviewPageState extends State<NewDocumentPreviewPage>{
   }
 
   void _goToDocumentUploadPage() async{
-    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentUploadPage(currentDocument) ));
+    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentUploadScreen(currentDocument) ));
   }
 
   _buildActionButtons(){  

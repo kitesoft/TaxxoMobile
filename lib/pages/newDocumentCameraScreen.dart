@@ -8,17 +8,17 @@ import 'dart:io';
 import 'dart:async';
 import '../entities/document.dart';
 
-import 'newDocumentPreviewPage.dart';
+import 'newDocumentPreviewScreen.dart';
 
-class NewDocumentCameraPage extends StatefulWidget{
+class NewDocumentCameraScreen extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => new NewDocumentCameraPageState();
+  State<StatefulWidget> createState() => new NewDocumentCameraScreenState();
 
 }
 
 
 
-class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
+class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
   List<CameraDescription> cameras;
   CameraController controller;
   bool isFlashOn;
@@ -114,7 +114,7 @@ class NewDocumentCameraPageState extends State<NewDocumentCameraPage>{
   }
 
   void goToNewDocumentPreviewPage() async {
-    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewPage(currentDocument) ));
+    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentPreviewScreen(currentDocument) ));
     if(result == null){
       //Back button pressed
       currentDocument.currentIndex++;

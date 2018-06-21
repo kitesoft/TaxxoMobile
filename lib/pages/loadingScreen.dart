@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class LoadingScreenPage extends StatefulWidget{
+class LoadingScreen extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => new LoadingScreenPageState();    
+  State<StatefulWidget> createState() => new LoadingScreenState();    
 
 } 
 
-class LoadingScreenPageState extends State<LoadingScreenPage> {
+class LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return new Container(

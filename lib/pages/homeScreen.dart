@@ -3,16 +3,16 @@ import '../widgets/featureButtonGrid.dart';
 import '../widgets/contextSelectionFooter.dart';
 
 import '../entities/featureButtonConfiguration.dart';
-import '../pages/newDocumentCameraPage.dart';
-import '../pages/loadingScreenPage.dart';
+import '../pages/newDocumentCameraScreen.dart';
+import '../pages/loadingScreen.dart';
 
-class HomePage extends StatefulWidget{
+class HomeScreen extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => new HomePageState();
+  State<StatefulWidget> createState() => new HomeScreenState();
 
 } 
 
-class HomePageState extends State<HomePage>{
+class HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -46,35 +46,35 @@ List<FeatureButtonConfiguration> getConfig(BuildContext context){
       const Color.fromARGB(0xFF,0x00,0xbb,0xa1),
       Icon(Icons.add, color: Colors.white,), 
       "Dodaj skan", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraPage() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraScreen() ))
   ));
   list.add(
     new FeatureButtonConfiguration(
       Color.fromARGB(0xFF,0xf0,0xc9,0x4a),
       Icon(Icons.insert_drive_file, color: Colors.white,), 
       "Ostatnie skany", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraPage() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraScreen() ))
   ));
   list.add(
     new FeatureButtonConfiguration(
       Color.fromARGB(0xFF,0xbc,0xc5,0x3d),
       Icon(Icons.credit_card, color: Colors.white,), 
       "Wizytówka", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraPage() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraScreen() ))
   ));
   list.add(
     new FeatureButtonConfiguration(
       Color.fromARGB(0xFF,0xc5,0x7e,0x3d),
       Icon(Icons.settings, color: Colors.white,), 
       "Ustawienia", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraPage() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraScreen() ))
   ));
   list.add(
     new FeatureButtonConfiguration(
       Color.fromARGB(0xFF,0xc5,0x7e,0x3d),
       Icon(Icons.extension, color: Colors.white,), 
       "Loading page", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new LoadingScreenPage() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new LoadingScreen() ))
   ));
   return list;
 } 

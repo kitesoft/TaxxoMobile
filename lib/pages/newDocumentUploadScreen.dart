@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import '../entities/document.dart';
 
 
-class NewDocumentUploadPage extends StatefulWidget{
+class NewDocumentUploadScreen extends StatefulWidget{
   final Document document;
-  NewDocumentUploadPage(this.document);
+  NewDocumentUploadScreen(this.document);
   @override
-  State<StatefulWidget> createState() => new NewDocumentUploadPageState();
+  State<StatefulWidget> createState() => new NewDocumentUploadScreenState();
 }
 
 
 
-class NewDocumentUploadPageState extends State<NewDocumentUploadPage>{
+class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
   Document currentDocument;
   bool isSending;
   int sendingStatus; //Not sure about usage 

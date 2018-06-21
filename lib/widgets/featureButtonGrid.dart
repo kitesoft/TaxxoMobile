@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../entities/featureButtonConfiguration.dart';
-import '../pages/newDocumentCameraPage.dart';
+import '../pages/newDocumentCameraScreen.dart';
 import 'featureButton.dart';
 
 

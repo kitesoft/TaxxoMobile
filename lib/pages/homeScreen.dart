@@ -5,6 +5,7 @@ import '../widgets/contextSelectionFooter.dart';
 import '../entities/featureButtonConfiguration.dart';
 import '../pages/newDocumentCameraScreen.dart';
 import '../pages/loadingScreen.dart';
+import '../pages/documentListScreen.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -24,16 +25,10 @@ class HomeScreenState extends State<HomeScreen>{
             )
           ],
         ),
-        drawer: new Drawer(),        
+        drawer: new Drawer(),
+        bottomNavigationBar: new ContextSelectionFooter(),        
         backgroundColor: const Color.fromARGB(0xFF,0x30,0x30,0x30),  
-        body: new Column(
-          verticalDirection: VerticalDirection.down,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            new FeatureButtonGrid(getConfig(context)),
-            new ContextSelectionFooter()
-          ]
-        )
+        body: new FeatureButtonGrid(getConfig(context)),       
     );
   }
 }
@@ -53,7 +48,7 @@ List<FeatureButtonConfiguration> getConfig(BuildContext context){
       Color.fromARGB(0xFF,0xf0,0xc9,0x4a),
       Icon(Icons.insert_drive_file, color: Colors.white,), 
       "Ostatnie skany", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentCameraScreen() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new DocumentListScreen() ))
   ));
   list.add(
     new FeatureButtonConfiguration(

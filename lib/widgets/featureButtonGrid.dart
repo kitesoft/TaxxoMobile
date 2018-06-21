@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../entities/featureButtonConfiguration.dart';
-import '../pages/newDocumentCameraScreen.dart';
 import 'featureButton.dart';
 
 
@@ -27,9 +26,7 @@ class FeatureButtonGridState extends State<FeatureButtonGrid>{
         children: configurations.map( (config) => new FeatureButton(config: config)).toList(),
       );
 
-      return new Expanded(
-        child: grid,
-      );
+      return grid;
   }
 
 }

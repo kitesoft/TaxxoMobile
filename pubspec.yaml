@@ -6,6 +6,8 @@ dependencies:
   camera:
   image_picker: 
   path_provider:
+  http:
+  intl: "^0.15.6"
   flutter:
     sdk: flutter
 

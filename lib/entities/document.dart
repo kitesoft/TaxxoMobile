@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 class Document {
-  DocumentPage thumbnail;
+  String thumbnailURL;
   List<DocumentPage> pages = new List<DocumentPage>();
   String documentNumber;
   DateTime accPeriod = new DateTime.now();

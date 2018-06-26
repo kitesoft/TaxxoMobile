@@ -105,7 +105,12 @@ class DocumentListScreenState extends State<DocumentListScreen>{
 
     var row = new Row(
       children: <Widget>[
-        new Expanded(child: _buildLeftSide(document)),
+        new Expanded(
+          child: new GestureDetector(
+            child: _buildLeftSide(document),
+            onTap: ()=> _goToDocumentPreviewScreen(document),
+          )
+        ),        
         new Expanded(child: _buildRightSide(document))
       ],
     );    
@@ -113,6 +118,8 @@ class DocumentListScreenState extends State<DocumentListScreen>{
       child: row,
       color:  Colors.black,
     );
+
+ 
   }
 
   Widget _buildLeftSide(RemoteDocument document){

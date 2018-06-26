@@ -93,7 +93,7 @@ class DocumentListScreenState extends State<DocumentListScreen>{
         crossAxisCount: (orientation == Orientation.portrait) ? 1: 2,
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
-        childAspectRatio: (orientation == Orientation.portrait) ? 2.1 : 2.2,
+        childAspectRatio: (orientation == Orientation.portrait) ? 2.2 : 2.2,
         padding: const EdgeInsets.all(25.0),
         children: documents.map( (doc) => _buildGridItem(doc)).toList(),
       );

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../entities/document.dart';
-
+import '../widgets/themedWidgets.dart';
+import '../themes/mainTheme.dart';
 
 class NewDocumentUploadScreen extends StatefulWidget{
-  final Document document;
+  final LocalDocument document;
   NewDocumentUploadScreen(this.document);
   @override
   State<StatefulWidget> createState() => new NewDocumentUploadScreenState();
@@ -12,13 +13,15 @@ class NewDocumentUploadScreen extends StatefulWidget{
 
 
 class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
-  Document currentDocument;
+  LocalDocument currentDocument;
   bool isSending;
   int sendingStatus; //Not sure about usage 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(),
+      appBar: new AppBar(
+        backgroundColor: appBarColor,
+      ),
       body: new Stack(
         children: <Widget>[
           new Container(color: new Color(0xFF303030)), // background
@@ -52,10 +55,7 @@ class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
             child: new Container(
               height: 12.0,
               width: 12.0, 
-              child:new CircularProgressIndicator(
-                strokeWidth: 1.0,
-                valueColor: new AlwaysStoppedAnimation<Color>(new Color(0xFF00bba1)),
-              )
+              child: new ThemedCircularProgressIndicator(strokeWidth: 1.0),
             ),
             padding: new EdgeInsets.only(left:8.0),
           )                        
@@ -64,7 +64,7 @@ class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
     
     return new Container(      
       decoration: new BoxDecoration(
-        color: const Color.fromARGB(0xFF, 0x21, 0x21, 0x21),
+        color: darkBackgroundColor,
         borderRadius: new BorderRadius.all( const Radius.circular(40.0))
       ),
       child: new Padding(child: content, padding: new EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),) 
@@ -73,8 +73,6 @@ class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
 
   Widget _buildDetailsBox(){
     var pageCount = currentDocument.pages.length;
-    Color activeStatusColor = new Color(0xFFF0C94A);
-    Color inactiveStatusColor = new Color(0xFF979797);
 
     var detailsRow = new Row(
         children: <Widget>[
@@ -95,9 +93,9 @@ class NewDocumentUploadScreenState extends State<NewDocumentUploadScreen>{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.min,      
       children: <Widget>[
-        new Icon(Icons.monetization_on, color: activeStatusColor,),
-        new Icon(Icons.check_circle, color: inactiveStatusColor,),
-        new Icon(Icons.local_offer, color: activeStatusColor,)        
+        new Icon(Icons.monetization_on, color: currentDocument.isPaid ? yellowAccentColor : greyIconColor ),
+        new Icon(Icons.check_circle, color: currentDocument.isAccepted ? yellowAccentColor : greyIconColor ),
+        new Icon(Icons.local_offer, color: currentDocument.tags.length > 0 ? yellowAccentColor : greyIconColor )        
       ],
     );
 

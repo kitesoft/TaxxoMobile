@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
 import '../entities/document.dart';
+import '../themes//mainTheme.dart';
 
 import 'newDocumentPreviewScreen.dart';
 
@@ -22,12 +23,13 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
   List<CameraDescription> cameras;
   CameraController controller;
   bool isFlashOn;
-  Document currentDocument;
+  LocalDocument currentDocument;
   String currentPageNotificationText;
   bool showCurrentPageNotification;
 
   @override
   Widget build(BuildContext context) {
+
      if ( cameras == null || !controller.value.isInitialized) {
       return new Container();
     }
@@ -37,6 +39,8 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
             child: new CameraPreview(controller),
         )
     );
+
+
 
     var stack = new Stack(    
       children: <Widget>[
@@ -63,7 +67,7 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
             return;
           }
             setState(() {
-              currentDocument = new Document();
+              currentDocument = new LocalDocument();
               isFlashOn = false;
             });
           });
@@ -89,7 +93,7 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
   }
 
   void createNewDocumentPage(List<int> data) {
-    var page = new DocumentPage(data);
+    var page = new LocalDocumentPage(data);
     var createNewItem =  currentDocument.currentIndex == currentDocument.pages.length; 
     if(createNewItem) 
     {
@@ -185,7 +189,7 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
       mini: false,
       heroTag: "takePictureButton",
       notchMargin: 11.0,
-      backgroundColor: const Color.fromARGB(0xFF, 0x00, 0xBB, 0xAA),
+      backgroundColor: accentColor,
       child: new Icon(Icons.camera, color: Colors.white),
       onPressed: ()=> this.takePicture()
     );
@@ -198,7 +202,7 @@ class NewDocumentCameraScreenState extends State<NewDocumentCameraScreen>{
       width: 60.0,
       height: 60.0,
       decoration: new BoxDecoration(
-        border: new Border.all(color: const Color.fromARGB(0xFF,0x00, 0xd2, 0xb5),width: 1.0)
+        border: new Border.all(color: accentColor,width: 1.0)
       ),
       child: new Image.memory(currentDocument.pages.last.data, fit:BoxFit.fill)      
     );

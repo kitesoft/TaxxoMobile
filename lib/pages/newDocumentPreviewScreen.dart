@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../themes//mainTheme.dart';
 import '../entities/document.dart';
 import 'newDocumentUploadScreen.dart';
+import '../widgets/themedWidgets.dart';
 
 class NewDocumentPreviewScreen extends StatefulWidget{
-  final Document document;
+  final LocalDocument document;
   NewDocumentPreviewScreen(this.document);
   
   @override
@@ -15,7 +17,7 @@ class NewDocumentPreviewScreen extends StatefulWidget{
 
 
 class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
-  Document currentDocument;
+  LocalDocument currentDocument;
   int currentPageIndex;
   PageController pageController;
 
@@ -25,13 +27,14 @@ class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
 
     return new Scaffold(
       appBar: new AppBar(
+        backgroundColor: appBarColor,
         title: new Text("Nowa faktura"),        
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: lightBackgroundColor,
       body: _buildBody(),
       floatingActionButton: new FloatingActionButton(
         heroTag: "NextPageButton",
-        backgroundColor: new Color(0xFF00BBA1),
+        backgroundColor: accentColor,
         child: new Icon(Icons.check, color: Colors.white),
         onPressed: () => _goToDocumentUploadPage(),
       ),
@@ -39,7 +42,7 @@ class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
   }
 
   void _goToDocumentUploadPage() async{
-    var result = await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentUploadScreen(currentDocument) ));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => new NewDocumentUploadScreen(currentDocument) ));
   }
 
   _buildActionButtons(){  
@@ -137,9 +140,7 @@ class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
          child : Container(
            width: 40.0,
            height: 40.0,
-           child: new CircularProgressIndicator(
-             valueColor: new AlwaysStoppedAnimation<Color>(new Color(0xFF00bba1)),
-           ) ,
+           child: new ThemedCircularProgressIndicator()
          )
       );
       return new PhotoView(imageProvider: new MemoryImage(currentDocument.pages[index].data), loadingChild: loadingContainer );
@@ -164,7 +165,7 @@ class NewDocumentPreviewScreenState extends State<NewDocumentPreviewScreen>{
 
     return new Container(      
       decoration: new BoxDecoration(
-        color: const Color.fromARGB(0xFF, 0x21, 0x21, 0x21),
+        color: darkBackgroundColor,
         borderRadius: new BorderRadius.all( const Radius.circular(40.0))
       ),
       child: new Padding(child: content, padding: new EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),) 

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import '../themes/mainTheme.dart';
 
-
-class ContextSelectionFooter extends StatelessWidget{
+class BottomContextSelectionBar extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return new Container(
       height: 56.0,
-      color: const Color.fromARGB(0xFF, 0x20, 0x20, 0x20),
-      width: double.infinity,
+      color: bottomNavigationBarColor,
       child: new Padding(
         padding: const EdgeInsets.fromLTRB(16.0,19.0,16.0,16.0),
         child: Row(

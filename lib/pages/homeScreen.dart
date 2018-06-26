@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../widgets/featureButtonGrid.dart';
-import '../widgets/contextSelectionFooter.dart';
+import '../widgets/bottomContextSelectionBar.dart';
 
 import '../entities/featureButtonConfiguration.dart';
 import '../pages/newDocumentCameraScreen.dart';
 import '../pages/loadingScreen.dart';
 import '../pages/documentListScreen.dart';
+import '../themes//mainTheme.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -18,6 +19,7 @@ class HomeScreenState extends State<HomeScreen>{
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
+          backgroundColor: appBarColor,
           actions: <Widget>[
             new Padding(
                padding: new EdgeInsets.all(13.0),
@@ -26,8 +28,8 @@ class HomeScreenState extends State<HomeScreen>{
           ],
         ),
         drawer: new Drawer(),
-        bottomNavigationBar: new ContextSelectionFooter(),        
-        backgroundColor: const Color.fromARGB(0xFF,0x30,0x30,0x30),  
+        bottomNavigationBar: new BottomContextSelectionBar(),        
+        backgroundColor: lightBackgroundColor,  
         body: new FeatureButtonGrid(getConfig(context)),       
     );
   }

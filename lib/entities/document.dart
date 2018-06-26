@@ -1,19 +1,29 @@
 import 'dart:typed_data';
 
-class Document {
-  String thumbnailURL;
-  List<DocumentPage> pages = new List<DocumentPage>();
+abstract class Document {
+  int id;
   String documentNumber;
-  DateTime accPeriod = new DateTime.now();
   String createdBy;
   DateTime creationDate = new DateTime.now(); 
-  int currentIndex = 0;
-  List<String> tags = new List<String>();
   bool isAccepted = false;
   bool isPaid = false;
+  List<String> tags = new List<String>();
 }
 
-class DocumentPage {
-  DocumentPage(this.data);
+class LocalDocumentPage {
+  LocalDocumentPage(this.data);
   List<int> data;
+}
+
+class LocalDocument extends Document {
+  int get pageCount => this.pages.length;
+  List<LocalDocumentPage> pages = new List<LocalDocumentPage>();
+  int currentIndex = 0;
+}
+
+class RemoteDocument extends Document {
+  String thumbnailURL;
+  String documentNumber;
+  List<String> pagesURLs = new List<String>();
+  DateTime accPeriod = new DateTime.now(); 
 }

@@ -8,11 +8,8 @@ class MenuDrawer extends StatelessWidget{
   MenuDrawer(this.username);
 
   @override
-  Widget build(BuildContext context) {        
-    var column = new Column(      
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget build(BuildContext context) {
+    var content = new ListView(      
       children: <Widget>[
           _buildHeader(),
           _buildDivider(),
@@ -21,7 +18,13 @@ class MenuDrawer extends StatelessWidget{
           _buildMenuItem("Zgłoś problem / sugestię"),
           _buildDivider(),
           _buildMenuItem("Polityka prywatności"),
-          _buildDivider()
+          _buildDivider(),         
+      ],      
+    );      
+    var column = new Column(      
+      children: <Widget>[
+        new Container(height:  MediaQuery.of(context).size.height - 60.0, child: content),
+        _buildLogoWithVersion() 
       ],
     );
 
@@ -30,13 +33,36 @@ class MenuDrawer extends StatelessWidget{
 
   Widget _buildHeader(){    
     return new Container(
-      padding: new EdgeInsets.fromLTRB(24.0,65.0,0.0,11.0),
+      padding: new EdgeInsets.fromLTRB(24.0,31.0,0.0,11.0),      
       child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text("Welcome"),
-          new Text(username),
+          new Text("Welcome", textAlign: TextAlign.left),
+          new Text(username, 
+            textAlign: TextAlign.left,             
+            style: new TextStyle(
+                fontSize: 22.0,
+            )
+          ),
         ],
       )
+    );
+  }
+
+  Widget _buildLogoWithVersion(){
+
+    var row = new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        new Text("0.0.0.1 Dev"),
+        new Image.asset("images/icons/upper_logo.png", height: 32.0, width: 126.0,)
+      ],
+    );
+
+    return new Container(
+      color: lightBackgroundColor,
+      child: row,
+      padding: new EdgeInsets.fromLTRB(24.0, 0.0, 20.0, 24.0),
     );
   }
 

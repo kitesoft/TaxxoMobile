@@ -73,7 +73,7 @@ List<FeatureButtonConfiguration> getConfig(BuildContext context){
       Color.fromARGB(0xFF,0xc5,0x7e,0x3d),
       Icon(Icons.extension, color: Colors.white,), 
       "Loading page", 
-      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new LoadingScreen() ))
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) => new LoadingScreen(null) ))
   ));
   return list;
 } 

@@ -109,12 +109,8 @@ class DocumentPreviewScreenState extends State<DocumentPreviewScreen>{
          )
       );
 
-      // return new ListView(
-      //   children: <Widget>[          
-      //     new Center(child: Image.network(document.pagesURLs[index])),        
-      //   ],        
-      // );
 
+  
       return new Container(
         child: new PhotoView(imageProvider: new NetworkImage(document.pagesURLs[index],scale: 2.0), loadingChild: loadingContainer )
       );

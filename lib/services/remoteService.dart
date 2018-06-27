@@ -38,4 +38,16 @@ class RemoteService {
     }
     return list;
   }
+
+  Future<bool> isServerOnline() async {
+    //TODO Implementation
+    await new Future.delayed(new Duration(seconds: 2));    
+    return true;
+  }
+
+  Future<bool> isNetworkEnabled() async {
+    await new Future.delayed(new Duration(seconds: 2));    
+    return true;
+  }
+  
 }

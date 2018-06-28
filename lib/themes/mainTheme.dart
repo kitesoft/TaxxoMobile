@@ -10,9 +10,11 @@ final textStyle = new TextStyle(color: Colors.white);
 final bottomNavigationBarColor = const Color.fromARGB(0xFF, 0x20, 0x20, 0x20);
 final greyIconColor = new Color(0xFF828282);
 final appBarColor = new Color(0xFF212121);
+final hintColor = new Color(0xFF47464A);
 final mainTheme = new ThemeData(
   primaryColor: lightBackgroundColor, // light black color 
-  accentColor: accentColor, //light green
+  accentColor: accentColor,
+  hintColor: hintColor, //light green
   textTheme: new TextTheme(
     title: textStyle,
     headline: textStyle,

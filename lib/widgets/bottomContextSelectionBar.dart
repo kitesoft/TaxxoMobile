@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../themes/mainTheme.dart';
+import '../pages/contextSelectionScreen.dart';
 
 class BottomContextSelectionBar extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    var container =  new Container(
       height: 56.0,
       color: bottomNavigationBarColor,
       child: new Padding(
@@ -18,6 +19,13 @@ class BottomContextSelectionBar extends StatelessWidget{
         )
       )
     );
+  
+    return new GestureDetector(
+      child: container,
+      onTap: ()=> _openContextSelection(context),
+    );
   }
-
+  _openContextSelection(BuildContext context) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => new ContextSelectionScreen() ));
+  }  
 }

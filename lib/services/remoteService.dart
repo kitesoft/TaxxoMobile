@@ -1,8 +1,10 @@
 import '../entities/document.dart';
 import '../entities/user.dart';
+import '../entities/contextInfo.dart';
 
 import 'dart:async';
 import 'dart:math';
+import 'dart:convert';
 
 //Temp
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class RemoteService {
       var docNumber = "FV " + random.nextInt(300).toString() + "/" + random.nextInt(12).toString() + "/2018";       
       var randomImageId = random.nextInt(1000);
       var doc = new RemoteDocument();
+      doc.id = randomImageId;
       doc.documentNumber = docNumber;      
       doc.thumbnailURL = "https://picsum.photos/300/300/?image=$randomImageId";
       doc.createdBy = "Random user $randomImageId";
@@ -50,4 +53,21 @@ class RemoteService {
     return true;
   }
   
+  Future<String> logIn(String login, String password) async {
+    await new Future.delayed(new Duration(seconds: 4));
+    if(login != null && login.isNotEmpty && password != null && password.isNotEmpty) return null;
+    else return "Login failed. Login and password cannot be empty";
+  }
+
+  Future<List<ContextInfo>> getContextList() async{
+    var result = new List<ContextInfo>();
+
+    for(var i=0; i <100; i++){
+      var item = new ContextInfo();
+      item.id = i;
+      item.name = "Company " + i.toString();
+      result.add(item);
+    }
+    return result;
+  }
 }

@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget{
 class HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    var scaffold = new Scaffold(
         appBar: new AppBar(
           backgroundColor: appBarColor,
           actions: <Widget>[
@@ -34,7 +34,16 @@ class HomeScreenState extends State<HomeScreen>{
         backgroundColor: lightBackgroundColor,  
         body: new FeatureButtonGrid(getConfig(context)),       
     );
+    return new WillPopScope(
+      child: scaffold,
+      onWillPop: () async => false
+    );
   }
+}
+showsnackBar(BuildContext context){
+  Scaffold.of(context).showSnackBar(new SnackBar(
+    content: new Text("Are you sure?:)"),
+  ));
 }
 
 List<FeatureButtonConfiguration> getConfig(BuildContext context){

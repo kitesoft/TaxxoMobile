@@ -88,21 +88,34 @@ class DocumentListScreenState extends State<DocumentListScreen>{
   Widget _buildGrid(){
     if(documents == null) return new Container();
 
-    final orientation = MediaQuery.of(context).orientation;
-    var grid = new GridView.count(        
-        crossAxisCount: (orientation == Orientation.portrait) ? 1: 2,
+    //final orientation = MediaQuery.of(context).orientation;
+    // var grid = new GridView.count(        
+    //     crossAxisCount: (orientation == Orientation.portrait) ? 1: 2,
+    //     mainAxisSpacing: 10.0,
+    //     crossAxisSpacing: 10.0,
+    //     childAspectRatio: (orientation == Orientation.portrait) ? 2.2 : 2.2,
+    //     padding: const EdgeInsets.all(25.0),
+    //     children: documents.map( (doc) => _buildGridItem(doc)).toList(),
+    //   );
+    var grid = new GridView.builder(
+      itemCount: documents.length,
+      padding: const EdgeInsets.all(25.0),
+      gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
+        childAspectRatio: 2.2,
         mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: (orientation == Orientation.portrait) ? 2.2 : 2.2,
-        padding: const EdgeInsets.all(25.0),
-        children: documents.map( (doc) => _buildGridItem(doc)).toList(),
-      );
+        crossAxisSpacing: 10.0,        
+        maxCrossAxisExtent: 600.0              
+      ),
+      itemBuilder: (BuildContext context, int index) => _buildGridItem(documents[index]),
+    );
 
     return grid;
   }
 
-  Widget _buildGridItem(RemoteDocument document){    
+  
 
+
+  Widget _buildGridItem(RemoteDocument document){    
     var row = new Row(
       children: <Widget>[
         new Expanded(

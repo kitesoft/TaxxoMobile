@@ -18,7 +18,10 @@ class TaxxoMobileState extends State<TaxxoMobile>{
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(      
-      home: isInitialized ? _renderLoginScreen() : _renderLoadingScreen(),
+      home: new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: isInitialized ? _renderLoginScreen() : _renderLoadingScreen(),
+      ),
       theme: mainTheme
     );
   }

@@ -17,8 +17,8 @@ class LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         _buildLogo(),
-        _buildLoginArea(),
-        _buildPasswordArea()
+        _buildTextEntry(true,"Login"),
+        _buildTextEntry(false,"Password")
       ],
     );
 
@@ -32,32 +32,29 @@ class LoginScreenState extends State<LoginScreen> {
     return new Image.asset("images/icons/upper_logo.png", height: 50.0, width: 200.0, );
   }
 
-  Widget _buildLoginArea(){
+
+  
+
+  Widget _buildTextEntry(bool showIcon,String label){
     return new Flexible(
       child: new Padding(
         child: TextField(
+          style: new TextStyle(fontSize: 18.0, color: new Color(0xFFA0A0A0)),
           decoration: new InputDecoration(            
-            labelText: "Login",            
-            icon: new Icon(Icons.person, color: new Color(0xFF828282))
-          )
+            labelText: label != null ? label : null,
+            labelStyle: label != null ? TextStyle(color: new Color(0xFF757576)) : null, 
+            isDense: false,                                   
+            icon: new Opacity(
+               child: Padding(child: new Icon(Icons.person, color: new Color(0xFF828282)), padding: new EdgeInsets.only(top: 13.0) ),
+               opacity: showIcon ? 1.0 : 0.0,
+            )
+          ),
+          
         ),
         padding: new EdgeInsets.only(left: 25.0, right: 30.0),     
       )
     );
   }
 
-    Widget _buildPasswordArea(){
-    return new Flexible(
-      child: new Padding(
-        child: new TextField(
-          decoration: InputDecoration(
-            hintText: 'Password',
-            icon: new Opacity(opacity: 0.0, child: Icon(Icons.person, color: new Color(0xFF828282)))
-          ),     
-        ),
-        padding: new EdgeInsets.only(left: 25.0,right: 30.0), 
-      )
-    );
-  }
- 
+
 }

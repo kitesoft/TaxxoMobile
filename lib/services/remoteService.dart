@@ -16,8 +16,7 @@ class RemoteService {
 
   Future<List<RemoteDocument>> fetchDocuments() async{
     var list = new List<RemoteDocument>();
-    for(var i=0; i <100; i++){
-
+    for(var i=0; i <100; i++){      
       var docNumber = "FV " + random.nextInt(300).toString() + "/" + random.nextInt(12).toString() + "/2018";       
       var randomImageId = random.nextInt(1000);
       var doc = new RemoteDocument();
@@ -25,9 +24,10 @@ class RemoteService {
       doc.documentNumber = docNumber;      
       doc.thumbnailURL = "https://picsum.photos/300/300/?image=$randomImageId";
       doc.createdBy = "Random user $randomImageId";
-      doc.documentNumber = "FV /01/2018";
       doc.isAccepted = random.nextBool();
       doc.isPaid = random.nextBool();
+      doc.accPeriod = new DateTime(2018, random.nextInt(12), 1);
+      doc.creationDate = new DateTime(2018, random.nextInt(12), random.nextInt(30));      
       if(random.nextBool()) doc.tags.add("tag");
 
       var numberOfPages = random.nextInt(15);
@@ -69,5 +69,20 @@ class RemoteService {
       result.add(item);
     }
     return result;
+  }
+
+  Map<int,String> getDocumentTypes()  {
+    var map = {
+      0 : "Unknown",
+      1 : "Faktura",
+      2 : "Paragon",
+      3 : "Rachunek",
+      4 : "Inne",
+      5 : "Dokument",
+      6 : "Faktura proforma",
+      7 : "Ubezpieczenie",
+      8 : "Brak",
+    };
+    return map;
   }
 }

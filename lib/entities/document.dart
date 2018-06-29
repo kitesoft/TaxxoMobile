@@ -26,4 +26,5 @@ class RemoteDocument extends Document {
   String documentNumber;
   List<String> pagesURLs = new List<String>();
   DateTime accPeriod = new DateTime.now(); 
+  int documentType;
 }

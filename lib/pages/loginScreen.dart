@@ -84,6 +84,7 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   Future<Null> _executeLogin() async{
+    FocusScope.of(context).requestFocus(new FocusNode());
     Scaffold.of(context).removeCurrentSnackBar();
     this.setState(()=> isLoginInProgress = true);
     var result = await remoteService.logIn(_loginController.text, _passwordController.text);
@@ -157,7 +158,7 @@ class LoginScreenState extends State<LoginScreen> {
           decoration: new InputDecoration(     
             border: UnderlineInputBorder(borderSide: BorderSide(color: hintColor)),       
             labelText: label != null ? label : null,
-            labelStyle: label != null ? TextStyle(color: new Color(0xFF757576)) : null, 
+            labelStyle: label != null ? TextStyle(color: secondaryTextColor) : null, 
             isDense: false,                                                           
             icon: new Opacity(
                child: Padding(child: new Icon(Icons.person, color: new Color(0xFF828282)), padding: new EdgeInsets.only(top: 16.0) ),

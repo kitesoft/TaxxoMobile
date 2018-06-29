@@ -40,11 +40,7 @@ class HomeScreenState extends State<HomeScreen>{
     );
   }
 }
-showsnackBar(BuildContext context){
-  Scaffold.of(context).showSnackBar(new SnackBar(
-    content: new Text("Are you sure?:)"),
-  ));
-}
+
 
 List<FeatureButtonConfiguration> getConfig(BuildContext context){
   var list = new List<FeatureButtonConfiguration>();

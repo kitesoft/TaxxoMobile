@@ -7,7 +7,7 @@ import 'dart:async';
 import '../widgets/themedWidgets.dart';
 import '../themes/mainTheme.dart';
 import '../pages/documentPreviewScreen.dart';
-
+import '../pages/documentEditScreen.dart';
 
 class DocumentListScreen extends StatefulWidget{
   @override
@@ -47,6 +47,10 @@ class DocumentListScreenState extends State<DocumentListScreen>{
 
   _goToDocumentPreviewScreen(RemoteDocument document){
     Navigator.push(context, MaterialPageRoute(builder: (context) => new DocumentPreviewScreen(document) ));
+  }
+
+    _goToDocumentEditScreen(RemoteDocument document) async {
+    var updatedDocument = await Navigator.push(context, MaterialPageRoute(builder: (context) => new DocumentEditScreen(document) ));
   }
 
   Widget _buildBody(){
@@ -208,10 +212,11 @@ class DocumentListScreenState extends State<DocumentListScreen>{
     );
 
     var editButton = new FloatingActionButton(
-           heroTag: "editDocumentButton_$uniqueId",
-           mini: true,
-           backgroundColor: new Color(0x19000000),
-           child: new Icon(Icons.create, color: Colors.white),
+      heroTag: "editDocumentButton_$uniqueId",
+      mini: true,
+      backgroundColor: new Color(0x19000000),
+      child: new Icon(Icons.create, color: Colors.white),
+      onPressed: ()async => _goToDocumentEditScreen(document),
     );
 
     var bottomRow = new Row(      

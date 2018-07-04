@@ -1,4 +1,4 @@
-package com.app.taxxomobile;
+package com.eserviceplatform.mobile.taxxo
 
 import android.os.Bundle;
 

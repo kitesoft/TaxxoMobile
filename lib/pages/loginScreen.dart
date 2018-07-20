@@ -37,7 +37,7 @@ class LoginScreenState extends State<LoginScreen> {
         new SizedBox(height: 17.0),
         _buildTextEntry(true,"Login",_loginController),
         new SizedBox(height: 17.0),
-        _buildTextEntry(false,"Password",_passwordController),
+        _buildTextEntry(false,"Password",_passwordController, hideText: true),
         new SizedBox(height: 30.0),
         isLoginInProgress ? _buildLoginIndicator() :  _buildLoginButton(),
         new SizedBox(height:34.0),
@@ -149,11 +149,12 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
 
-  Widget _buildTextEntry(bool showIcon,String label, TextEditingController controller){
+  Widget _buildTextEntry(bool showIcon,String label, TextEditingController controller, {bool hideText = false}){
     return new Flexible(
       child: new Padding(
         child: TextField(
           controller: controller,
+          obscureText:  hideText,
           style: new TextStyle(fontSize: 18.0, color: new Color(0xFFA0A0A0)),
           decoration: new InputDecoration(     
             border: UnderlineInputBorder(borderSide: BorderSide(color: hintColor)),       

@@ -3,6 +3,7 @@ import '../entities/document.dart';
 import 'package:intl/intl.dart';
 import '../themes/mainTheme.dart';
 import '../services/remoteService.dart';
+import '../widgets/formControls/accPeriodField.dart';
 
 class DocumentEditForm extends StatefulWidget {
   final RemoteDocument document;
@@ -32,8 +33,9 @@ class DocumentEditFormState extends State<DocumentEditForm>{
       child: new Column(
         children: <Widget>[          
           _buildTopInfoRow(),
-          _buildDocumentTypeTitle(),
-          _buildDocumentTypeRow()
+          new SizedBox(height: 33.0),
+          _buildDocumentTypeRow(),    
+          _buildAccPeriodRow()      
         ],
       ),
     );
@@ -68,18 +70,37 @@ class DocumentEditFormState extends State<DocumentEditForm>{
     );
   }
 
-  Widget _buildDocumentTypeTitle(){
-    var text = new Text("Typ", textAlign: TextAlign.left, style: new TextStyle(fontSize: 14.0, color: darkGreyTextColor));
-    return new Padding(
-      child: new Align(
-        child: new Container(color: Colors.green,child: text), 
-        alignment: Alignment.centerLeft
-      ),    
-      padding: new EdgeInsets.only(left: 70.0),
+
+  Widget _buildFormField(Widget editor, String title, [IconData leadingIcon]){
+
+    var tile = new ListTile(      
+      leading: new Opacity(
+        child: Icon(leadingIcon, color: new Color(0xFF828282)),
+        opacity: leadingIcon != null ? 1.0 : 0.0,
+      ), 
+      title: editor
+    );    
+
+    var column = new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new Padding(
+          child: new Text(title, style: new TextStyle(fontSize: 14.0, color: secondaryTextColor)),
+          padding: new EdgeInsets.only(left: 72.0),
+        ),
+        tile
+      ],
     );
 
-    
+
+    return new Padding(
+      child: column,
+      padding: new EdgeInsets.only(right: 30.0)
+    );
   }
+
   Widget _buildDocumentTypeRow(){
     var dropDown = new DropdownButton<int>(        
         hint: new Text("Document type"),      
@@ -94,9 +115,11 @@ class DocumentEditFormState extends State<DocumentEditForm>{
         onChanged: (_) { this.setState(()=> document.documentType = _);},
     );
     
-    return new ListTile(
-      leading: new Icon(Icons.insert_drive_file, color: new Color(0xFF828282)),
-      title: dropDown
-    );    
+    return _buildFormField(dropDown, "Typ",Icons.insert_drive_file);
+  }
+
+  Widget _buildAccPeriodRow(){    
+    var field = new AccPeriodField(document.accPeriod);
+    return _buildFormField(field, "Okres",);
   }
 }

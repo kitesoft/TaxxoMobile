@@ -4,26 +4,37 @@ import '../../themes/mainTheme.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-class AccPeriodField extends StatelessWidget{
-  Map<String,int> months;
-  Map<String,int> years;
+class AccPeriodField extends StatefulWidget{
+  final DateTime date;
+  final Function(DateTime) onAccPeriodChanged;
+
+  AccPeriodField(this.date,this.onAccPeriodChanged);
+
+  @override
+  State<StatefulWidget> createState() => new AccPeriodFieldState(date, onAccPeriodChanged);
+}
+
+class AccPeriodFieldState extends State<AccPeriodField> {
+  Map<int, DateTime> months;
+  Map<int, DateTime> years;
   final int yearsLength = 50;
   final int startYear = 2000;
-  final DateTime date;
+  DateTime date;
   FixedExtentScrollController yearController;
   FixedExtentScrollController monthController;
   final DateFormat monthFormat = new DateFormat().add_MMM();
   final DateFormat dateFormat = new DateFormat("MM.y");
   final TextEditingController textController = new TextEditingController();
-  AccPeriodField(this.date){
+  final Function(DateTime) onAccPeriodChanged;
+  int selectedYear;
+  int selectedMonth;
+
+  AccPeriodFieldState(this.date,this.onAccPeriodChanged){
     initializeDateFormatting();
     months = _getMonths();
     years = _getYears();
-
-    var selectedYear = years[date.year.toString()];
-    var selectedMonth = months[monthFormat.format(date)];
-    yearController = new FixedExtentScrollController(initialItem: selectedYear);
-    monthController = new FixedExtentScrollController(initialItem: selectedMonth);
+    selectedYear = years.entries.firstWhere( (x)=> x.value.year == date.year, orElse: ()=> years.entries.first ).key;
+    selectedMonth = months.entries.firstWhere( (x)=> x.value.month == date.month, orElse: ()=> months.entries.first ).key;
   }
 
   @override
@@ -31,6 +42,7 @@ class AccPeriodField extends StatelessWidget{
     var column = new Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        new SizedBox(height: 6.0),
         new Text(dateFormat.format(date), textAlign: TextAlign.left, style: new TextStyle(color: lightGreyTextColor),),
         new Divider(height: 7.5, color: lightGreyTextColor)
       ],
@@ -50,49 +62,50 @@ class AccPeriodField extends StatelessWidget{
     );
   }
 
-  void showPicker(BuildContext context){
+  showPicker(BuildContext context){
    showDialog<DateTime>(context: context, builder: _buildPicker);
   }
 
-  Map<String,int> _getMonths(){
-    Map<String,int> result = new Map<String,int>();
+  Map<int,DateTime> _getMonths(){
+    var result = new Map<int,DateTime>();
     
     for(var i=0; i < DateTime.monthsPerYear;i++){
       var date = new DateTime(2000,i + 1);
-      var formattedMonth = monthFormat.format(date);
-      result.putIfAbsent(formattedMonth, ()=> i);
+      result.putIfAbsent(i, ()=> date);
     }
     return result;
   }
 
-  Map<String,int> _getYears(){
-    Map<String,int> result = new Map<String,int>();
-    
+  Map<int,DateTime> _getYears(){
+    var result = new Map<int,DateTime>();  
     for(var i=0; i < yearsLength;i++){
-      result.putIfAbsent((startYear + i).toString(), ()=> i );
+      result.putIfAbsent( i, ()=> new DateTime(startYear + i) );
     }
     return result;
   }
 
   List<Widget> _buildMonthList(){
     var result = new List<Widget>();
-    months.forEach((idx,val)=> result.add(new Text(idx, style: new TextStyle(color: Colors.black))));
+    months.forEach((idx,val)=> result.add(new Text(monthFormat.format(val), style: new TextStyle(color: Colors.black))));
     return result;
   }
 
   List<Widget> _buildYearList(){    
       var result = new List<Widget>();
-      years.forEach((idx,val)=> result.add(new Text(idx, style: new TextStyle(color: Colors.black))));
+      years.forEach((idx,val)=> result.add(new Text(val.year.toString(), style: new TextStyle(color: Colors.black))));
       return result;
   }
  
   Widget _buildPicker(BuildContext context){
+    yearController = new FixedExtentScrollController(initialItem: selectedYear);
+    monthController = new FixedExtentScrollController(initialItem: selectedMonth);
+
     var yearPicker = new CupertinoPicker(      
       children: _buildYearList(),
       itemExtent: 25.0,      
       scrollController: yearController,
       backgroundColor: Colors.white,
-      onSelectedItemChanged: (x)=> {},
+      onSelectedItemChanged: (idx)=> this.setState( ()=> selectedYear = idx ),
     );
     
     var monthPicker = new CupertinoPicker(
@@ -100,8 +113,9 @@ class AccPeriodField extends StatelessWidget{
       itemExtent: 25.0,
       scrollController: monthController,
       backgroundColor: Colors.white,
-      onSelectedItemChanged: (x)=> {},
+      onSelectedItemChanged: (idx)=> this.setState( ()=> selectedMonth = idx ),
     );
+
     var row = new Row(        
         children: <Widget>[
           new Expanded( child: monthPicker),
@@ -124,10 +138,17 @@ class AccPeriodField extends StatelessWidget{
           onPressed: () { Navigator.pop(context, null ); }
         ),
         new FlatButton(
-          child: const Text('OK'),
-          onPressed: () { Navigator.pop(context, null ); }
+          child: new Text('OK', style: new TextStyle(color: yellowAccentColor),),
+          onPressed: () { 
+            Navigator.pop(context, null );
+            var newDate = new DateTime(years[selectedYear].year, months[selectedMonth].month);
+            this.setState(()=> this.date = newDate);            
+            onAccPeriodChanged(newDate);
+          }
         )
       ],
     );
   }
+
+
 }

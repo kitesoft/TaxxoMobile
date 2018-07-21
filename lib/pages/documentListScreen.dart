@@ -48,9 +48,17 @@ class DocumentListScreenState extends State<DocumentListScreen>{
   _goToDocumentPreviewScreen(RemoteDocument document){
     Navigator.push(context, MaterialPageRoute(builder: (context) => new DocumentPreviewScreen(document) ));
   }
-
-    _goToDocumentEditScreen(RemoteDocument document) async {
-    var updatedDocument = await Navigator.push(context, MaterialPageRoute(builder: (context) => new DocumentEditScreen(document) ));
+  _goToDocumentEditScreen(RemoteDocument document) async {
+    var updatedDocument = await Navigator.push<RemoteDocument>(context, MaterialPageRoute(builder: (context) => new DocumentEditScreen(document) ));
+    if(updatedDocument != null){
+      for (var i=0; i <  documents.length; i++) {
+        if(documents[i].id == updatedDocument.id) {
+          documents[i] = updatedDocument;
+          this.setState( ()=> documents = documents );
+          break;
+        }
+      }
+    }
   }
 
   Widget _buildBody(){
@@ -92,15 +100,6 @@ class DocumentListScreenState extends State<DocumentListScreen>{
   Widget _buildGrid(){
     if(documents == null) return new Container();
 
-    //final orientation = MediaQuery.of(context).orientation;
-    // var grid = new GridView.count(        
-    //     crossAxisCount: (orientation == Orientation.portrait) ? 1: 2,
-    //     mainAxisSpacing: 10.0,
-    //     crossAxisSpacing: 10.0,
-    //     childAspectRatio: (orientation == Orientation.portrait) ? 2.2 : 2.2,
-    //     padding: const EdgeInsets.all(25.0),
-    //     children: documents.map( (doc) => _buildGridItem(doc)).toList(),
-    //   );
     var grid = new GridView.builder(
       itemCount: documents.length,
       padding: const EdgeInsets.all(25.0),

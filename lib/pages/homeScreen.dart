@@ -8,7 +8,7 @@ import '../pages/newDocumentCameraScreen.dart';
 import '../pages/loadingScreen.dart';
 import '../pages/documentListScreen.dart';
 import '../themes//mainTheme.dart';
-
+import '../services/authService.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -29,7 +29,7 @@ class HomeScreenState extends State<HomeScreen>{
             )
           ],
         ),
-        drawer: new Drawer(child: new MenuDrawer("Test user")),
+        drawer: new Drawer(child: new MenuDrawer(AuthService.instance.currentContext)),
         bottomNavigationBar: new BottomContextSelectionBar(),        
         backgroundColor: lightBackgroundColor,  
         body: new FeatureButtonGrid(getConfig(context)),       

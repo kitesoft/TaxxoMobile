@@ -5,7 +5,6 @@ import 'package:photo_view/photo_view.dart';
 import '../widgets/themedWidgets.dart';
 import '../widgets/documentDetailsBox.dart';
 
-
 class DocumentPreviewScreen extends StatefulWidget {
   RemoteDocument document;
   DocumentPreviewScreen(this.document);
@@ -111,7 +110,7 @@ class DocumentPreviewScreenState extends State<DocumentPreviewScreen>{
 
 
   
-      return new Container(
+      return new Container(        
         child: new PhotoView(imageProvider: new NetworkImage(document.pagesURLs[index],scale: 2.0), loadingChild: loadingContainer )
       );
   }

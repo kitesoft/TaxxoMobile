@@ -1,4 +1,8 @@
 class ContextInfo {
-  int id;
-  String name;
+  int userId;
+  int customerId;
+  int accOfficeId;  
+  String userName;
+  String customerName;
+  String accOfficeName;
 }

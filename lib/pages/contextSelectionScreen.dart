@@ -3,6 +3,8 @@ import '../widgets/themedWidgets.dart';
 import '../entities/contextInfo.dart';
 import '../services/remoteService.dart';
 import '../themes/mainTheme.dart';
+import '../services/authService.dart';
+import 'dart:async';
 
 class ContextSelectionScreen extends StatefulWidget{
   @override
@@ -13,9 +15,12 @@ class ContextSelectionScreen extends StatefulWidget{
 class ContextSelectionScreenState extends State<ContextSelectionScreen> {
   RemoteService remoteService;
   List<ContextInfo> contextList;
+  ContextInfo contextInfo; 
+
 
   ContextSelectionScreenState(){
     remoteService = new RemoteService();
+    contextInfo = AuthService.instance.currentContext;
   }
 
   @override
@@ -32,12 +37,11 @@ class ContextSelectionScreenState extends State<ContextSelectionScreen> {
   void initState() {      
 
       super.initState();
-      _fetchData();
+      _fetchData();      
   }
 
-  _fetchData() async{
-    var list = await remoteService.getContextList();
-
+   Future<Null> _fetchData() async{
+    var list = await remoteService.getContextList();    
     this.setState(()=> contextList = list);
   }
 
@@ -48,19 +52,25 @@ class ContextSelectionScreenState extends State<ContextSelectionScreen> {
       itemCount: contextList.length,
       itemBuilder: (BuildContext context, int index) => _buildListViewItem(contextList[index]) ,      
     );
-    return new Container(
+    var container = new Container(
       color: lightBackgroundColor,
       child: builder,
     );
+  
+    return new RefreshIndicator(
+      child: container,
+      onRefresh: _fetchData,
+      color: accentColor,
+    );
   }
   _buildListViewItem(ContextInfo item){
-    var isCurrentSelection = item.id == 10;
+    var isCurrentSelection = item.customerName == this.contextInfo.customerName; // TODO Change to ID 
 
     var row = new Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new Text(item.name),
+        new Text(item.customerName),
         new Opacity(
           child: new Icon(Icons.check,color: Colors.white),
           opacity: isCurrentSelection ? 1.0 : 0.0,
@@ -76,12 +86,23 @@ class ContextSelectionScreenState extends State<ContextSelectionScreen> {
         padding: new EdgeInsets.fromLTRB(24.0, 19.0, 24.0, 17.0),
       ),
     );
-    return new Column(
+    var column = new Column(
       children: <Widget>[
         container,
         new Divider(color: new Color(0x19FFFFFF), height: 1.0,)
       ],
     );
+
+    return new GestureDetector(
+      child:  new Container(child: column, color: Colors.transparent),
+      onTap: (){
+        item.userName = AuthService.instance.currentContext.userName;
+        AuthService.instance.currentContext = item;
+        this.setState( ()=> contextInfo = item);
+        Navigator.pop(context, item);
+      },
+    );
+
   }
 
   _buildLoadingIndicator(){

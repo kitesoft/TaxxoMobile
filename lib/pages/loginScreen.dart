@@ -4,7 +4,7 @@ import '../widgets/themedWidgets.dart';
 import 'dart:async';
 import '../services/remoteService.dart';
 import '../pages/homeScreen.dart';
-
+import '../services/authService.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -98,6 +98,7 @@ class LoginScreenState extends State<LoginScreen> {
       Scaffold.of(context).showSnackBar(snackbar);
     } else{
        var homeScreenRoute = new MaterialPageRoute(builder: (context) => new HomeScreen());
+       AuthService.instance.currentContext.userName = _loginController.text; // TODO Change after Remote Service implementation
        Navigator.pushAndRemoveUntil(context, homeScreenRoute,  (Route<dynamic> route) => false);
     }
   }
@@ -126,10 +127,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
     
 
-    return new GestureDetector(
-      child: paddingContainer,
-      onTap: ()=> debugPrint("Login clicked"),
-    );  
+    return paddingContainer;
   }
   
   Widget _buildActionsRow(){

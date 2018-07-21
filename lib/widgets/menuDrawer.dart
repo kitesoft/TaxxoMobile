@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../themes//mainTheme.dart';
-
+import '../entities/contextInfo.dart';
 
 class MenuDrawer extends StatelessWidget{
-  String username;
+  ContextInfo contextInfo;
   
-  MenuDrawer(this.username);
+  MenuDrawer(this.contextInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class MenuDrawer extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text("Welcome", textAlign: TextAlign.left),
-          new Text(username, 
+          new Text(contextInfo.userName, 
             textAlign: TextAlign.left,             
             style: new TextStyle(
                 fontSize: 22.0,

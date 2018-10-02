@@ -2,20 +2,12 @@ name: taxxomobile
 description: A new Flutter project.
 
 dependencies:
-<<<<<<< HEAD
   photo_view: "^0.0.8" 
   camera_plugin: 
     path: ../camera
   image_picker: 
   path_provider: 
   http: 
-=======
-  photo_view:
-  camera:
-  image_picker:
-  path_provider:
-  http:
->>>>>>> dd3f97838a92f4b47559be1f9d0d9688bfd1b99f
   intl: "^0.15.6"
   flutter:
     sdk: flutter
